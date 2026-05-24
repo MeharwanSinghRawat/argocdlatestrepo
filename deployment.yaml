@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: meharacr321.azurecr.io/todofrontend:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: APP_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_MODE
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: LOG_LEVEL
+
+
+
+# kubectl set image deployment/newdeployment mycont=nginx:latest
+# kubectl scale deployment/newdeployment --replicas=1
+
+# kubectl create deployment nginx --image=nginx
+
+#kubectl rollout status deployment/newdeployment
+
+#kubectl rollout history deployment/newdeployment
+
+#kubectl rollout undo deployment/newdeployment
+
+# kubectl get all
+# kubctl get all -n kube-system
+# kubectl get pod -n kube-system
+# kubectl expose deployment newdeployment --type=NodePort --port=80
+#
+######
